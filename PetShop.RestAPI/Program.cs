@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PetShop.Infrastructure.Data;
 
 namespace PetShop.RestAPI
 {
@@ -13,6 +14,7 @@ namespace PetShop.RestAPI
     {
         public static void Main(string[] args)
         {
+            FakeDB.InitData();
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -18,19 +18,9 @@ namespace PetShop.Core.ApplicationService.Implementations
             _petRepository = petRepository;
         }
 
-        public Pet AddPet(string name, PetType type, DateTime birthdate, DateTime soldDate, string color, string previousOwner, double price)
+        public Pet AddPet(Pet pet)
         {
-            Pet pet = new Pet
-            {
-                Name = name,
-                Type = type,
-                BirthDate = birthdate,
-                SoldDate = soldDate,
-                Color = color,
-                PreviousOwner = previousOwner,
-                Price = price
-            };
-
+          
             return _petRepository.AddPet(pet);
         }
 

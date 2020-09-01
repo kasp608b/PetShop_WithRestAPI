@@ -10,6 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using PetShop.Core.ApplicationService;
+using PetShop.Core.ApplicationService.Implementations;
+using PetShop.Core.DomainService;
+using PetShop.Core.HelperClasses.Implementations;
+using PetShop.Core.HelperClasses.Interfaces;
+using PetShop.Infrastructure.Data;
 
 namespace PetShop.RestAPI
 {
@@ -25,6 +31,9 @@ namespace PetShop.RestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IPetRepository, PetRepository>();
+            services.AddScoped<IPetService, PetService>();
+            services.AddScoped<IParser, Parser>();
             services.AddControllers();
         }
 

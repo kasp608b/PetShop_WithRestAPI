@@ -10,7 +10,7 @@ namespace PetShop.Core.ApplicationService
     {
         public List<Pet> GetPets();
 
-        public Pet AddPet(string name, PetType type, DateTime birthdate, DateTime soldDate, string color, string previousOwner, double price);
+        public Pet AddPet(Pet pet);
 
         public Pet DeletePet(int id);
 
