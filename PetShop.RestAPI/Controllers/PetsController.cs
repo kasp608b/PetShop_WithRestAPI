@@ -24,20 +24,23 @@ namespace PetShop.RestAPI.Controllers
 
         // GET: api/<PetsController>
         [HttpGet]
+        [Route("GetPets")]
         public ActionResult<List<Pet>> GetPets()
         {
             return _petService.GetPets();
         }
 
         // GET: api/<PetsController>
-        [HttpGet("{sort}")]
+        [HttpGet]
+        [Route("SortPetsByPrice")]
         public ActionResult<List<Pet>> SortPetsByPrice(string sort)
         {
             return _petService.SortPetsByPrice();
         }
 
         // GET api/<PetsController>/5
-        [HttpGet("{type}")]
+        [HttpGet]
+        [Route("SearchByType/{type}")]
         public ActionResult<List<Pet>> SearchByType( PetType type)
         {
             return _petService.SearchByType(type);
@@ -45,20 +48,23 @@ namespace PetShop.RestAPI.Controllers
 
         // POST api/<PetsController>
         [HttpPost]
+        [Route("AddPet")]
         public Pet AddPet([FromBody] Pet pet)
         {
             return _petService.AddPet(pet);
         }
 
         // PUT api/<PetsController>/5
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("EditPet/{id}")]
         public Pet EditPet(int id, [FromBody] Pet pet)
         {
             return _petService.EditPet(id, pet);
         }
 
         // DELETE api/<PetsController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("Delete/{id}")]
         public Pet Delete(int id)
         {
             return _petService.DeletePet(id);
