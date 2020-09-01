@@ -39,26 +39,15 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         }
 
-        public Pet EditPet(int id, string name, PetType type, DateTime birthdate, DateTime soldDate, string color, string previousOwner, double price)
+        public Pet EditPet(int idOfPetToEdit, Pet editedPet)
         {
-            if (!_petRepository.ReadPets().Exists(x => x.ID == id))
+            if (!_petRepository.ReadPets().Exists(x => x.ID == idOfPetToEdit))
             {
                 throw new InvalidDataException("A pet with this ID does not exist");
             }
             else
             {
-                Pet petToEdit = new Pet
-                {
-                    Name = name,
-                    Type = type,
-                    BirthDate = birthdate,
-                    SoldDate = soldDate,
-                    Color = color,
-                    PreviousOwner = previousOwner,
-                    Price = price
-                };
-
-                return _petRepository.EditPet(id, petToEdit);
+                return _petRepository.EditPet(idOfPetToEdit, editedPet);
             }
             
         }

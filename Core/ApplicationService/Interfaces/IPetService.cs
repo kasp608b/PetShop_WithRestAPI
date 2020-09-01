@@ -14,7 +14,7 @@ namespace PetShop.Core.ApplicationService
 
         public Pet DeletePet(int id);
 
-        public Pet EditPet(int id, string name, PetType type, DateTime birthdate, DateTime soldDate, string color, string previousOwner, double price);
+        public Pet EditPet(int idOfPetToEdit, Pet editedPet);
 
         public List<Pet> SearchByType(PetType type);
 
