@@ -1,7 +1,9 @@
 ﻿using PetShop.Core.DomainService;
 using PetShop.Core.Entities;
+using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PetShop.Infrastructure.Data
@@ -34,6 +36,21 @@ namespace PetShop.Infrastructure.Data
             petToEdit.PreviousOwner = editedPet.PreviousOwner;
             petToEdit.Price = editedPet.Price;
             return petToEdit;
+        }
+
+        public List<Pet> SearchByType(PetType type)
+        {
+          return FakeDB._pets.FindAll(x => x.Type == type);
+        }
+
+        public List<Pet> SortPetsByPrice()
+        {
+            return FakeDB._pets.OrderBy(o => o.Price).ToList();
+        }
+
+        public List<Pet> SearchByTypeAndSortByPrice(PetType type)
+        {
+            return SearchByType(type).OrderBy(o => o.Price).ToList();
         }
     }
 }

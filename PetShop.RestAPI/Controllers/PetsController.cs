@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PetShop.Core.ApplicationService;
 using PetShop.Core.Entities;
+using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Enums;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,16 +26,22 @@ namespace PetShop.RestAPI.Controllers
 
         // GET: api/<PetsController>
         [HttpGet]
-        [Route("GetPets")]
-        public ActionResult<List<Pet>> GetPets()
+        public ActionResult<List<Pet>> GetPets([FromQuery] Filter filter)
         {
-            return _petService.GetPets();
+            try
+            {
+                return _petService.GetPets(filter);
+            }
+            catch (InvalidDataException e)
+            {
+                return BadRequest("Something went wrong with your request\n" + e);
+            }
         }
 
         // GET: api/<PetsController>
         [HttpGet]
         [Route("SortPetsByPrice")]
-        public ActionResult<List<Pet>> SortPetsByPrice(string sort)
+        public ActionResult<List<Pet>> SortPetsByPrice(bool ifSort)
         {
             return _petService.SortPetsByPrice();
         }
@@ -57,7 +65,7 @@ namespace PetShop.RestAPI.Controllers
         // PUT api/<PetsController>/5
         [HttpPut]
         [Route("EditPet/{id}")]
-        public Pet EditPet(int id, [FromBody] Pet pet)
+        public ActionResult<Pet> EditPet(int id, [FromBody] Pet pet)
         {
             return _petService.EditPet(id, pet);
         }
@@ -65,7 +73,7 @@ namespace PetShop.RestAPI.Controllers
         // DELETE api/<PetsController>/5
         [HttpDelete]
         [Route("Delete/{id}")]
-        public Pet Delete(int id)
+        public ActionResult<Pet> Delete(int id)
         {
             return _petService.DeletePet(id);
         }

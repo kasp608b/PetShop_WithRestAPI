@@ -43,8 +43,14 @@ namespace PetShop.RestAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var repo = scope.ServiceProvider.GetService<IPetRepository>();
+                    new DataInitializer(repo).InitData();
+                        
+                }
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

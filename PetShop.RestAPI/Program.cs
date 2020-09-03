@@ -14,7 +14,6 @@ namespace PetShop.RestAPI
     {
         public static void Main(string[] args)
         {
-            FakeDB.InitData();
             CreateHostBuilder(args).Build().Run();
         }
 

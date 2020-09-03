@@ -1,4 +1,5 @@
 ﻿using PetShop.Core.Entities;
+using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace PetShop.Core.ApplicationService
 {
     public interface IPetService
     {
-        public List<Pet> GetPets();
+        public List<Pet> GetPets(Filter filter);
 
         public Pet AddPet(Pet pet);
 
@@ -19,5 +20,7 @@ namespace PetShop.Core.ApplicationService
         public List<Pet> SearchByType(PetType type);
 
         public List<Pet> SortPetsByPrice();
+
+        public List<Pet> SearchByTypeAndSortByPrice(PetType type);
     }
 }

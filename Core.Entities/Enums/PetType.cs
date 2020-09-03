@@ -6,13 +6,13 @@ namespace PetShop.Core.Entities.Enums
 {
     public enum PetType
     {
+        DefaultPetType,
         Cat,
         Dog,
         Fish,
         Goat,
         Tiger,
-        Parrot,
-        Kakorot
+        Parrot
 
     }
 }
