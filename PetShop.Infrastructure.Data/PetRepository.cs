@@ -52,5 +52,10 @@ namespace PetShop.Infrastructure.Data
         {
             return SearchByType(type).OrderBy(o => o.Price).ToList();
         }
+
+        public List<Pet> SearchById(int id)
+        {
+            return FakeDB._pets.FindAll(x => x.ID == id);
+        }
     }
 }

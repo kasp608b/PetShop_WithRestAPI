@@ -2,6 +2,7 @@
 using PetShop.Core.Entities;
 using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Enums;
+using PetShop.Core.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,10 +14,12 @@ namespace PetShop.Core.ApplicationService.Implementations
     public class PetService : IPetService
     {
         private IPetRepository _petRepository;
-        
-        public PetService(IPetRepository petRepository)
+        private IParser _parser;
+
+        public PetService(IPetRepository petRepository, IParser parser)
         {
             _petRepository = petRepository;
+            _parser = parser;
         }
 
         public Pet AddPet(Pet pet)
@@ -38,7 +41,7 @@ namespace PetShop.Core.ApplicationService.Implementations
            Pet petToDelete;
            if(!_petRepository.ReadPets().Exists(x => x.ID == id))
            {
-                throw new InvalidDataException("A pet with this ID does not exist");
+                throw new KeyNotFoundException("A pet with this ID does not exist");
            }
            else 
            {
@@ -52,7 +55,7 @@ namespace PetShop.Core.ApplicationService.Implementations
         {
             if (!_petRepository.ReadPets().Exists(x => x.ID == idOfPetToEdit))
             {
-                throw new InvalidDataException("A pet with this ID does not exist");
+                throw new KeyNotFoundException("A pet with this ID does not exist");
             }
             else
             {
@@ -63,7 +66,7 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public List<Pet> GetPets(Filter filter)
         {
-            if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType)
+            if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType && filter.SearchId == 0)
             {
                 return _petRepository.ReadPets();
             }
@@ -79,11 +82,27 @@ namespace PetShop.Core.ApplicationService.Implementations
             {
                 return SortPetsByPrice();
             }
+            else if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType && filter.SearchId > 0)
+            {
+                return SearchById(filter.SearchId);
+            }
             else 
             {
                 throw new InvalidDataException("This shouldn't be happening, something went terribly wrong.");
             }
 
+        }
+
+        public List<Pet> SearchById(int id)
+        {
+            if (!_petRepository.ReadPets().Exists(x => x.ID == id))
+            {
+                throw new KeyNotFoundException("No pets with this id exist");
+            }
+            else
+            {
+                return _petRepository.SearchById(id);
+            }
         }
 
         public List<Pet> SearchByType(PetType type)
@@ -97,7 +116,7 @@ namespace PetShop.Core.ApplicationService.Implementations
             {
                 if (!_petRepository.ReadPets().Exists(x => x.Type == type))
                 {
-                    throw new InvalidDataException("No pets of this type exist");
+                    throw new KeyNotFoundException("No pets of this type exist");
                 }
                 else
                 {
@@ -119,7 +138,7 @@ namespace PetShop.Core.ApplicationService.Implementations
             {
                 if (!_petRepository.ReadPets().Exists(x => x.Type == type))
                 {
-                    throw new InvalidDataException("No pets of this type exist");
+                    throw new KeyNotFoundException("No pets of this type exist");
                 }
                 else
                 {

@@ -22,5 +22,7 @@ namespace PetShop.Core.ApplicationService
         public List<Pet> SortPetsByPrice();
 
         public List<Pet> SearchByTypeAndSortByPrice(PetType type);
+
+        public List<Pet> SearchById(int id);
     }
 }

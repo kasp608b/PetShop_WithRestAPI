@@ -12,7 +12,6 @@ namespace PetShop.Core.Entities.Enums
         Fish,
         Goat,
         Tiger,
-        Parrot
-
+        Parrot,
     }
 }

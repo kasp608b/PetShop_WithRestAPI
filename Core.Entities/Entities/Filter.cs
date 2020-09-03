@@ -9,6 +9,9 @@ namespace PetShop.Core.Entities.Entities
     {
         
         public bool IsSort { get; set; }
+
         public PetType SearchType { get; set; }
+
+        public int SearchId { get; set; }
     }
 }

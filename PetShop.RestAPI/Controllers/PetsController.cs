@@ -36,12 +36,15 @@ namespace PetShop.RestAPI.Controllers
             {
                 return BadRequest("Something went wrong with your request\n" + e);
             }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound("Could not find requested pet\n" + e);
+            }
         }
 
 
         // POST api/<PetsController>
         [HttpPost]
-        [Route("AddPet")]
         public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
             try
@@ -55,19 +58,32 @@ namespace PetShop.RestAPI.Controllers
         }
 
         // PUT api/<PetsController>/5
-        [HttpPut]
-        [Route("EditPet/{id}")]
+        [HttpPut("{id}")]
         public ActionResult<Pet> EditPet(int id, [FromBody] Pet pet)
         {
-            return _petService.EditPet(id, pet);
+            try
+            {
+                return _petService.EditPet(id, pet);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound("Could not find requested pet\n" + e);
+            }
+            
         }
 
         // DELETE api/<PetsController>/5
-        [HttpDelete]
-        [Route("Delete/{id}")]
+        [HttpDelete("{id}")]
         public ActionResult<Pet> Delete(int id)
         {
-            return _petService.DeletePet(id);
+            try
+            {
+                return _petService.DeletePet(id);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound("Could not find requested pet\n" + e);
+            }
         }
     }
 }

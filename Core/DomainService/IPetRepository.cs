@@ -18,6 +18,8 @@ namespace PetShop.Core.DomainService
 
         public List<Pet> SearchByType(PetType type);
 
+        public List<Pet> SearchById(int id);
+
         public List<Pet> SortPetsByPrice();
 
         public List<Pet> SearchByTypeAndSortByPrice(PetType type);
