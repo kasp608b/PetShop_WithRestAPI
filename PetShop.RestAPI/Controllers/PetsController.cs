@@ -38,28 +38,20 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // GET: api/<PetsController>
-        [HttpGet]
-        [Route("SortPetsByPrice")]
-        public ActionResult<List<Pet>> SortPetsByPrice(bool ifSort)
-        {
-            return _petService.SortPetsByPrice();
-        }
-
-        // GET api/<PetsController>/5
-        [HttpGet]
-        [Route("SearchByType/{type}")]
-        public ActionResult<List<Pet>> SearchByType( PetType type)
-        {
-            return _petService.SearchByType(type);
-        }
 
         // POST api/<PetsController>
         [HttpPost]
         [Route("AddPet")]
-        public Pet AddPet([FromBody] Pet pet)
+        public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
-            return _petService.AddPet(pet);
+            try
+            {
+                return _petService.AddPet(pet);
+            }
+            catch (InvalidDataException e)
+            {
+                return BadRequest("Something went wrong with your request\n" + e);
+            }
         }
 
         // PUT api/<PetsController>/5
