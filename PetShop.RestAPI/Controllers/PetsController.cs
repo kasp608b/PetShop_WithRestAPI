@@ -24,6 +24,7 @@ namespace PetShop.RestAPI.Controllers
             _petService = petservice;
         }
 
+
         // GET: api/<PetsController>
         [HttpGet]
         public ActionResult<List<Pet>> GetPets([FromQuery] Filter filter)
@@ -42,6 +43,23 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
+        // GET: api/<PetsController>/1
+        [HttpGet("{id}")]
+        public ActionResult<List<Pet>> GetPets(int id)
+        {
+            try
+            {
+                return _petService.SearchById(id);
+            }
+            catch (InvalidDataException e)
+            {
+                return BadRequest("Something went wrong with your request\n" + e);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound("Could not find requested pet\n" + e);
+            }
+        }
 
         // POST api/<PetsController>
         [HttpPost]

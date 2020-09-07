@@ -12,6 +12,5 @@ namespace PetShop.Core.Entities.Entities
 
         public PetType SearchType { get; set; }
 
-        public int SearchId { get; set; }
     }
 }

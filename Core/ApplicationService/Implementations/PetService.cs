@@ -66,7 +66,7 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public List<Pet> GetPets(Filter filter)
         {
-            if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType && filter.SearchId == 0)
+            if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType)
             {
                 return _petRepository.ReadPets();
             }
@@ -82,16 +82,13 @@ namespace PetShop.Core.ApplicationService.Implementations
             {
                 return SortPetsByPrice();
             }
-            else if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType && filter.SearchId > 0)
-            {
-                return SearchById(filter.SearchId);
-            }
             else 
             {
                 throw new InvalidDataException("This shouldn't be happening, something went terribly wrong.");
             }
 
         }
+
 
         public List<Pet> SearchById(int id)
         {
