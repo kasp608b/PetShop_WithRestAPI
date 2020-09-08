@@ -9,6 +9,7 @@ namespace PetShop.Core.ApplicationService
 {
     public interface IPetService
     {
+
         public List<Pet> GetPets(Filter filter);
 
         public Pet AddPet(Pet pet);
@@ -16,12 +17,6 @@ namespace PetShop.Core.ApplicationService
         public Pet DeletePet(int id);
 
         public Pet EditPet(int idOfPetToEdit, Pet editedPet);
-
-        public List<Pet> SearchByType(PetType type);
-
-        public List<Pet> SortPetsByPrice();
-
-        public List<Pet> SearchByTypeAndSortByPrice(PetType type);
 
         public List<Pet> SearchById(int id);
     }

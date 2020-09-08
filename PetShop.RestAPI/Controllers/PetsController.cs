@@ -31,7 +31,7 @@ namespace PetShop.RestAPI.Controllers
         {
             try
             {
-                return _petService.GetPets(filter);
+                return Ok(_petService.GetPets(filter));
             }
             catch (InvalidDataException e)
             {
@@ -49,7 +49,7 @@ namespace PetShop.RestAPI.Controllers
         {
             try
             {
-                return _petService.SearchById(id);
+                return Ok(_petService.SearchById(id));
             }
             catch (InvalidDataException e)
             {
@@ -67,7 +67,7 @@ namespace PetShop.RestAPI.Controllers
         {
             try
             {
-                return _petService.AddPet(pet);
+                return Ok(_petService.AddPet(pet));
             }
             catch (InvalidDataException e)
             {
@@ -81,7 +81,7 @@ namespace PetShop.RestAPI.Controllers
         {
             try
             {
-                return _petService.EditPet(id, pet);
+                return Ok(_petService.EditPet(id, pet));
             }
             catch (KeyNotFoundException e)
             {
@@ -96,7 +96,7 @@ namespace PetShop.RestAPI.Controllers
         {
             try
             {
-                return _petService.DeletePet(id);
+                return Ok(_petService.DeletePet(id));
             }
             catch (KeyNotFoundException e)
             {

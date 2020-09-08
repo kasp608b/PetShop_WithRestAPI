@@ -3,17 +3,79 @@ using PetShop.Core.Entities;
 using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using PetShop.Core.Entities.Entities;
 
 namespace PetShop.Infrastructure.Data
 {
     public class PetRepository : IPetRepository
     {
-        public List<Pet> ReadPets()
+        public List<Pet> GetAllPets()
         {
             return FakeDB._pets;
         }
+
+        public List<Pet> GetAllPetsFiltered(Filter filter)
+        {
+            DateTime searchDate;
+            IEnumerable<Pet> filtering = GetAllPets();
+
+            if (!string.IsNullOrEmpty(filter.SearchText))
+            {
+                switch (filter.SearchField)
+                {
+                    case "Name":
+                        filtering = filtering.Where(p => p.Name.Contains(filter.SearchText));
+                        break;
+
+                    case "Type":
+                        filtering = filtering.Where(p => p.Type.Contains(filter.SearchText));
+                        break;
+
+                    case "BirthDate":
+                        
+                        if (DateTime.TryParse(filter.SearchText, out searchDate))
+                        {
+                            filtering = filtering.Where(p => p.BirthDate.Date.Equals(searchDate.Date));
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("Wrong input, has to be a valid birthdate in format day/month/year");
+                        }
+                        
+                        break;
+
+                    case "SoldDate":
+                        
+                        if (DateTime.TryParse(filter.SearchText, out searchDate))
+                        {
+                            filtering = filtering.Where(p => p.SoldDate.Date.Equals(searchDate.Date));
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("Wrong input, has to be a valid birthdate in format day/month/year");
+                        }
+                        break;
+
+                    case "Color":
+                        break;
+
+                    case "PreviousOwner":
+                        break;
+
+                    case "Price":
+                        break;
+                    default:
+                        throw new InvalidDataException("Wrong Searchfield input, searchfield has to match a coresponding pet property");
+
+                }
+            }
+
+            return filtering.ToList();
+        }
+
         public Pet AddPet(Pet petToAdd)
         {
             return FakeDB.AddPet(petToAdd);
@@ -21,7 +83,7 @@ namespace PetShop.Infrastructure.Data
 
         public Pet DeletePet(Pet petToDelete)
         {
-            ReadPets().Remove(petToDelete);
+            GetAllPets().Remove(petToDelete);
             return petToDelete;
         }
 
@@ -38,20 +100,6 @@ namespace PetShop.Infrastructure.Data
             return petToEdit;
         }
 
-        public List<Pet> SearchByType(PetType type)
-        {
-          return FakeDB._pets.FindAll(x => x.Type == type);
-        }
-
-        public List<Pet> SortPetsByPrice()
-        {
-            return FakeDB._pets.OrderBy(o => o.Price).ToList();
-        }
-
-        public List<Pet> SearchByTypeAndSortByPrice(PetType type)
-        {
-            return SearchByType(type).OrderBy(o => o.Price).ToList();
-        }
 
         public List<Pet> SearchById(int id)
         {

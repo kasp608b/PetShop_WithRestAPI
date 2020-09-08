@@ -24,7 +24,7 @@ namespace PetShop.Infrastructure.Data
                 new Pet
                 {
                     Name = "Jerry",
-                    Type = PetType.Cat,
+                    Type = "cat",
                     BirthDate = DateTime.Now.AddYears(-12),
                     Color = "Blue",
                     PreviousOwner = "Arnold Perkins",
@@ -35,7 +35,7 @@ namespace PetShop.Infrastructure.Data
                 new Pet
                 {
                     Name = "Tom",
-                    Type = PetType.Dog,
+                    Type = "dog",
                     BirthDate = DateTime.Now.AddYears(-22),
                     Color = "Red",
                     PreviousOwner = "Cory Zemecki",
@@ -45,7 +45,7 @@ namespace PetShop.Infrastructure.Data
                 new Pet
                 {
                     Name = "Cinc",
-                    Type = PetType.Fish,
+                    Type = "parrot",
                     BirthDate = DateTime.Now.AddYears(-1),
                     Color = "Purple",
                     PreviousOwner = "Harold Harold",

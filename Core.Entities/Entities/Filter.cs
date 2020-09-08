@@ -7,10 +7,13 @@ namespace PetShop.Core.Entities.Entities
 {
     public class Filter
     {
-        
-        public bool IsSort { get; set; }
 
-        public PetType SearchType { get; set; }
+        public string OrderDirection { get; set; }
+        public string OrderProperty { get; set; }
+        public string SearchText { get; set; }
+        public string SearchField { get; set; }
+        public int ItemsPrPage { get; set; }
+        public int CurrentPage { get; set; }
 
     }
 }

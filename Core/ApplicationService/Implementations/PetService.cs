@@ -39,13 +39,13 @@ namespace PetShop.Core.ApplicationService.Implementations
         public Pet DeletePet(int id)
         {
            Pet petToDelete;
-           if(!_petRepository.ReadPets().Exists(x => x.ID == id))
+           if(!_petRepository.GetAllPets().Exists(x => x.ID == id))
            {
                 throw new KeyNotFoundException("A pet with this ID does not exist");
            }
            else 
            {
-                petToDelete = _petRepository.ReadPets().Find(x => x.ID == id);
+                petToDelete = _petRepository.GetAllPets().Find(x => x.ID == id);
                 return _petRepository.DeletePet(petToDelete);
            }
 
@@ -53,7 +53,7 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public Pet EditPet(int idOfPetToEdit, Pet editedPet)
         {
-            if (!_petRepository.ReadPets().Exists(x => x.ID == idOfPetToEdit))
+            if (!_petRepository.GetAllPets().Exists(x => x.ID == idOfPetToEdit))
             {
                 throw new KeyNotFoundException("A pet with this ID does not exist");
             }
@@ -66,33 +66,18 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public List<Pet> GetPets(Filter filter)
         {
-            if (filter.IsSort == false && filter.SearchType == PetType.DefaultPetType)
+            if (!string.IsNullOrEmpty(filter.SearchText) && string.IsNullOrEmpty(filter.SearchField))
             {
-                return _petRepository.ReadPets();
-            }
-            else if(filter.IsSort == true && !(filter.SearchType == PetType.DefaultPetType))
-            {
-                return SearchByTypeAndSortByPrice(filter.SearchType);
-            }
-            else if(filter.IsSort == false && !(filter.SearchType == PetType.DefaultPetType))
-            {
-                return SearchByType(filter.SearchType);
-            }
-            else if(filter.IsSort == true && filter.SearchType == PetType.DefaultPetType)
-            {
-                return SortPetsByPrice();
-            }
-            else 
-            {
-                throw new InvalidDataException("This shouldn't be happening, something went terribly wrong.");
+                filter.SearchField = "Name";
             }
 
+            return _petRepository.GetAllPetsFiltered(filter);
         }
 
 
         public List<Pet> SearchById(int id)
         {
-            if (!_petRepository.ReadPets().Exists(x => x.ID == id))
+            if (!_petRepository.GetAllPets().Exists(x => x.ID == id))
             {
                 throw new KeyNotFoundException("No pets with this id exist");
             }
@@ -102,52 +87,5 @@ namespace PetShop.Core.ApplicationService.Implementations
             }
         }
 
-        public List<Pet> SearchByType(PetType type)
-        {
-            List<Pet> petsFound = new List<Pet>();
-            if(!(type == PetType.Cat || type == PetType.Dog || type == PetType.Fish || type == PetType.Goat || type == PetType.Parrot || type == PetType.Tiger))
-            {
-                throw new InvalidDataException("Invalid pet type");
-            }
-            else
-            {
-                if (!_petRepository.ReadPets().Exists(x => x.Type == type))
-                {
-                    throw new KeyNotFoundException("No pets of this type exist");
-                }
-                else
-                {
-                    petsFound = _petRepository.SearchByType(type);
-                    return petsFound;
-                }
-            }
-            
-        }
-
-        public List<Pet> SearchByTypeAndSortByPrice(PetType type)
-        {
-            List<Pet> petsFound = new List<Pet>();
-            if (!(type == PetType.Cat || type == PetType.Dog || type == PetType.Fish || type == PetType.Goat || type == PetType.Parrot || type == PetType.Tiger))
-            {
-                throw new InvalidDataException("Invalid pet type");
-            }
-            else
-            {
-                if (!_petRepository.ReadPets().Exists(x => x.Type == type))
-                {
-                    throw new KeyNotFoundException("No pets of this type exist");
-                }
-                else
-                {
-                    return _petRepository.SearchByTypeAndSortByPrice(type);
-                }
-            }
-            
-        }
-
-        public List<Pet> SortPetsByPrice()
-        {
-            return _petRepository.SortPetsByPrice();
-        }
     }
 }
