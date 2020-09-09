@@ -38,7 +38,7 @@ namespace PetShop.Infrastructure.Data
                         
                         if (DateTime.TryParse(filter.SearchText, out searchDate))
                         {
-                            filtering = filtering.Where(p => p.BirthDate.Date.Equals(searchDate.Date));
+                            filtering = filtering.Where(p => p.BirthDate.ToShortDateString().Contains(searchDate.ToShortDateString()));
                         }
                         else
                         {
@@ -51,7 +51,7 @@ namespace PetShop.Infrastructure.Data
                         
                         if (DateTime.TryParse(filter.SearchText, out searchDate))
                         {
-                            filtering = filtering.Where(p => p.SoldDate.Date.Equals(searchDate.Date));
+                            filtering = filtering.Where(p => p.SoldDate.ToShortDateString().Contains(searchDate.ToShortDateString()));
                         }
                         else
                         {

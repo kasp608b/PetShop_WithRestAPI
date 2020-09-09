@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.Core.ApplicationService.Implementations
 {
@@ -24,6 +25,8 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public Pet AddPet(Pet pet)
         {
+            Pet addedPet;
+
             if(pet.Equals(null))
             {
                 throw new InvalidDataException("Pet cannot be null");
@@ -33,7 +36,14 @@ namespace PetShop.Core.ApplicationService.Implementations
             {
                 throw new InvalidDataException("Pet name has to be longer than one");
             }
-            return _petRepository.AddPet(pet);
+
+            addedPet = _petRepository.AddPet(pet);
+            if (addedPet == null)
+            {
+                throw new DataBaseException("Something went wrong in the database");
+            }
+
+            return addedPet;
         }
 
         public Pet DeletePet(int id)
@@ -66,9 +76,18 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public List<Pet> GetPets(Filter filter)
         {
+            List<Pet> filteredPets;
+
             if (!string.IsNullOrEmpty(filter.SearchText) && string.IsNullOrEmpty(filter.SearchField))
             {
                 filter.SearchField = "Name";
+            }
+
+            filteredPets = _petRepository.GetAllPetsFiltered(filter);
+
+            if (filteredPets.Count < 1)
+            {
+                throw new KeyNotFoundException("Could not find pets that satisfy the filter");
             }
 
             return _petRepository.GetAllPetsFiltered(filter);

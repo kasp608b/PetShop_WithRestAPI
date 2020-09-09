@@ -8,6 +8,7 @@ using PetShop.Core.ApplicationService;
 using PetShop.Core.Entities;
 using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Enums;
+using PetShop.Core.Entities.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -35,11 +36,15 @@ namespace PetShop.RestAPI.Controllers
             }
             catch (InvalidDataException e)
             {
-                return BadRequest("Something went wrong with your request\n" + e);
+                return BadRequest("Something went wrong with your request\n" + e.Message);
             }
             catch (KeyNotFoundException e)
             {
-                return NotFound("Could not find requested pet\n" + e);
+                return NotFound("Could not find requested pet\n" + e.Message);
+            }
+            catch (DataBaseException e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
 
@@ -53,11 +58,15 @@ namespace PetShop.RestAPI.Controllers
             }
             catch (InvalidDataException e)
             {
-                return BadRequest("Something went wrong with your request\n" + e);
+                return BadRequest("Something went wrong with your request\n" + e.Message);
             }
             catch (KeyNotFoundException e)
             {
-                return NotFound("Could not find requested pet\n" + e);
+                return NotFound("Could not find requested pet\n" + e.Message);
+            }
+            catch (DataBaseException e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
 
@@ -71,7 +80,11 @@ namespace PetShop.RestAPI.Controllers
             }
             catch (InvalidDataException e)
             {
-                return BadRequest("Something went wrong with your request\n" + e);
+                return BadRequest("Something went wrong with your request\n" + e.Message);
+            }
+            catch (DataBaseException e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
 
@@ -83,11 +96,19 @@ namespace PetShop.RestAPI.Controllers
             {
                 return Ok(_petService.EditPet(id, pet));
             }
+            catch (InvalidDataException e)
+            {
+                return BadRequest("Something went wrong with your request\n" + e.Message);
+            }
             catch (KeyNotFoundException e)
             {
-                return NotFound("Could not find requested pet\n" + e);
+                return NotFound("Could not find requested pet\n" + e.Message);
             }
-            
+            catch (DataBaseException e)
+            {
+                return StatusCode(500, e.Message);
+            }
+
         }
 
         // DELETE api/<PetsController>/5
@@ -98,9 +119,17 @@ namespace PetShop.RestAPI.Controllers
             {
                 return Ok(_petService.DeletePet(id));
             }
+            catch (InvalidDataException e)
+            {
+                return BadRequest("Something went wrong with your request\n" + e.Message);
+            }
             catch (KeyNotFoundException e)
             {
-                return NotFound("Could not find requested pet\n" + e);
+                return NotFound("Could not find requested pet\n" + e.Message);
+            }
+            catch (DataBaseException e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
     }
