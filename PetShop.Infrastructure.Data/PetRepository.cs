@@ -12,6 +12,7 @@ namespace PetShop.Infrastructure.Data
 {
     public class PetRepository : IPetRepository
     {
+        
         public List<Pet> GetAllPets()
         {
             return FakeDB._pets;
@@ -79,7 +80,7 @@ namespace PetShop.Infrastructure.Data
                         }
                         break;
                     default:
-                        throw new InvalidDataException("Wrong Searchfield input, searchfield has to match a coresponding pet property");
+                        throw new InvalidDataException("Wrong Search-field input, search-field has to match a corresponding pet property");
 
                 }
             }
@@ -87,6 +88,11 @@ namespace PetShop.Infrastructure.Data
             if (!string.IsNullOrEmpty(filter.OrderDirection) && !string.IsNullOrEmpty(filter.OrderProperty))
             {
                 var prop = typeof(Pet).GetProperty(filter.OrderProperty);
+                if (prop == null)
+                {
+                    throw new InvalidDataException("Wrong OrderProperty input, OrderProperty has to match to corresponding pet property");
+                }
+
                 filtering = "ASC".Equals(filter.OrderDirection)
                     ? filtering.OrderBy(p => prop.GetValue(p, null))
                     : filtering.OrderByDescending(p => prop.GetValue(p, null));
