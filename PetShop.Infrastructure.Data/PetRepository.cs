@@ -20,6 +20,7 @@ namespace PetShop.Infrastructure.Data
         public List<Pet> GetAllPetsFiltered(Filter filter)
         {
             DateTime searchDate;
+            Double searchDouble;
             IEnumerable<Pet> filtering = GetAllPets();
 
             if (!string.IsNullOrEmpty(filter.SearchText))
@@ -38,7 +39,7 @@ namespace PetShop.Infrastructure.Data
                         
                         if (DateTime.TryParse(filter.SearchText, out searchDate))
                         {
-                            filtering = filtering.Where(p => p.BirthDate.Date.Equals(searchDate.Date));
+                            filtering = filtering.Where(p => p.BirthDate.ToShortDateString().Contains(searchDate.ToShortDateString()));
                         }
                         else
                         {
@@ -51,7 +52,7 @@ namespace PetShop.Infrastructure.Data
                         
                         if (DateTime.TryParse(filter.SearchText, out searchDate))
                         {
-                            filtering = filtering.Where(p => p.SoldDate.Date.Equals(searchDate.Date));
+                            filtering = filtering.Where(p => p.SoldDate.ToShortDateString().Contains(searchDate.ToShortDateString()));
                         }
                         else
                         {
@@ -60,17 +61,35 @@ namespace PetShop.Infrastructure.Data
                         break;
 
                     case "Color":
+                        filtering = filtering.Where(p => p.Color.Contains(filter.SearchText));
                         break;
 
                     case "PreviousOwner":
+                        filtering = filtering.Where(p => p.PreviousOwner.Contains(filter.SearchText));
                         break;
 
                     case "Price":
+                        if (double.TryParse(filter.SearchText, out searchDouble))
+                        {
+                            filtering = filtering.Where(p => p.Price.Equals(searchDouble));
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("Wrong input, has to be a valid double");
+                        }
                         break;
                     default:
                         throw new InvalidDataException("Wrong Searchfield input, searchfield has to match a coresponding pet property");
 
                 }
+            }
+
+            if (!string.IsNullOrEmpty(filter.OrderDirection) && !string.IsNullOrEmpty(filter.OrderProperty))
+            {
+                var prop = typeof(Pet).GetProperty(filter.OrderProperty);
+                filtering = "ASC".Equals(filter.OrderDirection)
+                    ? filtering.OrderBy(p => prop.GetValue(p, null))
+                    : filtering.OrderByDescending(p => prop.GetValue(p, null));
             }
 
             return filtering.ToList();
