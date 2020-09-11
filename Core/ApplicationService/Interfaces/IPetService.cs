@@ -10,7 +10,7 @@ namespace PetShop.Core.ApplicationService
     public interface IPetService
     {
 
-        public List<Pet> GetPets(Filter filter);
+        public FilteredList<Pet> GetPets(Filter filter);
 
         public Pet AddPet(Pet pet);
 

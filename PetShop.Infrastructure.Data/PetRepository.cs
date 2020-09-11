@@ -18,10 +18,15 @@ namespace PetShop.Infrastructure.Data
             return FakeDB._pets;
         }
 
-        public List<Pet> GetAllPetsFiltered(Filter filter)
+        public FilteredList<Pet> GetAllPetsFiltered(Filter filter)
         {
             DateTime searchDate;
             Double searchDouble;
+            var filteredList = new FilteredList<Pet>();
+
+            filteredList.TotalCount = GetAllPets().Count;
+            filteredList.FilterUsed = filter;
+
             IEnumerable<Pet> filtering = GetAllPets();
 
             if (!string.IsNullOrEmpty(filter.SearchText))
@@ -98,7 +103,8 @@ namespace PetShop.Infrastructure.Data
                     : filtering.OrderByDescending(p => prop.GetValue(p, null));
             }
 
-            return filtering.ToList();
+            filteredList.List = filtering.ToList();
+            return filteredList;
         }
 
         public Pet AddPet(Pet petToAdd)

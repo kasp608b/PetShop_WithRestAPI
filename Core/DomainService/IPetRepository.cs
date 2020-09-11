@@ -11,7 +11,7 @@ namespace PetShop.Core.DomainService
     {
         public List<Pet> GetAllPets();
 
-        public List<Pet> GetAllPetsFiltered(Filter filter);
+        public FilteredList<Pet> GetAllPetsFiltered(Filter filter);
 
         public Pet AddPet(Pet petToAdd);
 

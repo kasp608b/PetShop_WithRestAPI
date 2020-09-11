@@ -28,7 +28,7 @@ namespace PetShop.RestAPI.Controllers
 
         // GET: api/<PetsController>
         [HttpGet]
-        public ActionResult<List<Pet>> GetPets([FromQuery] Filter filter)
+        public ActionResult<FilteredList<Pet>> GetPets([FromQuery] Filter filter)
         {
             try
             {

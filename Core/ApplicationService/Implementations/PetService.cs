@@ -74,9 +74,9 @@ namespace PetShop.Core.ApplicationService.Implementations
             
         }
 
-        public List<Pet> GetPets(Filter filter)
+        public FilteredList<Pet> GetPets(Filter filter)
         {
-            List<Pet> filteredPets;
+            FilteredList<Pet> filteredPets;
 
             if (!string.IsNullOrEmpty(filter.SearchText) && string.IsNullOrEmpty(filter.SearchField))
             {
@@ -85,7 +85,7 @@ namespace PetShop.Core.ApplicationService.Implementations
 
             filteredPets = _petRepository.GetAllPetsFiltered(filter);
 
-            if (filteredPets.Count < 1)
+            if (filteredPets.List.Count < 1)
             {
                 throw new KeyNotFoundException("Could not find pets that satisfy the filter");
             }
