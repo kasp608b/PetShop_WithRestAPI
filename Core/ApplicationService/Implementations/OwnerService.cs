@@ -5,6 +5,8 @@ using System.Text;
 using PetShop.Core.ApplicationService.Interfaces;
 using PetShop.Core.DomainService;
 using PetShop.Core.Entities.Entities;
+using PetShop.Core.Entities.Entities.Business;
+using PetShop.Core.Entities.Entities.Filter;
 using PetShop.Core.Entities.Exceptions;
 using PetShop.Core.HelperClasses.Interfaces;
 

@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using PetShop.Core.Entities.Entities;
+using PetShop.Core.Entities.Entities.Business;
+using PetType = PetShop.Core.Entities.Entities.Business.PetType;
 
 namespace PetShop.Infrastructure.Data
 {
@@ -13,16 +15,19 @@ namespace PetShop.Infrastructure.Data
        
         private IPetRepository _petRepository;
         private IOwnerRepository _ownerRepository;
-        public DataInitializer(IPetRepository petRepository, IOwnerRepository ownerRepository)
+        private IPetTypeRepository _petTypeRepository;
+        public DataInitializer(IPetRepository petRepository, IOwnerRepository ownerRepository, IPetTypeRepository petTypeRepository)
         {
             _petRepository = petRepository;
             _ownerRepository = ownerRepository;
+            _petTypeRepository = petTypeRepository;
         }
 
         public void InitData()
         {
             List<Pet> pets;
             List<Owner> owners;
+            List<PetType> petTypes;
 
             pets = new List<Pet> {
                 new Pet
@@ -88,6 +93,26 @@ namespace PetShop.Infrastructure.Data
             foreach (Owner owner in owners)
             {
                 _ownerRepository.AddOwner(owner);
+            }
+
+            petTypes = new List<PetType> {
+                new PetType
+                {
+                    Name = "Cat",
+                },
+                new PetType
+                {
+                    Name = "Dog",
+                },
+                new PetType
+                {
+                    Name = "Bird",
+                }
+            };
+
+            foreach (PetType petType in petTypes)
+            {
+                _petTypeRepository.AddPetType(petType);
             }
         }
     }

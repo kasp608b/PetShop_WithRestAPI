@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PetShop.Core.Entities.Entities.Business;
+using PetShop.Core.Entities.Entities.Filter;
 using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.Core.ApplicationService.Implementations

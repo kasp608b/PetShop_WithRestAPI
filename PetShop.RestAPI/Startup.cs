@@ -37,6 +37,8 @@ namespace PetShop.RestAPI
             services.AddScoped<IPetService, PetService>();
             services.AddScoped<IOwnerRepository, OwnerRepository>();
             services.AddScoped<IOwnerService, OwnerService>();
+            services.AddScoped<IPetTypeRepository, PetTypeRepository>();
+            services.AddScoped<IPetTypeService, PetTypeService>();
             services.AddScoped<IParser, Parser>();
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(o =>
@@ -57,7 +59,8 @@ namespace PetShop.RestAPI
                 {
                     var petRepo = scope.ServiceProvider.GetService<IPetRepository>();
                     var ownerRepo = scope.ServiceProvider.GetService<IOwnerRepository>();
-                    new DataInitializer(petRepo, ownerRepo).InitData(); 
+                    var petTypeRepo = scope.ServiceProvider.GetService<IPetTypeRepository>();
+                    new DataInitializer(petRepo, ownerRepo, petTypeRepo).InitData(); 
                 }
             //}
             

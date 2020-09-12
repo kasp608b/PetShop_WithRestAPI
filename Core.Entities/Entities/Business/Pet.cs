@@ -1,9 +1,6 @@
-﻿using PetShop.Core.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
-namespace PetShop.Core.Entities
+namespace PetShop.Core.Entities.Entities.Business
 {
     public class Pet
     {

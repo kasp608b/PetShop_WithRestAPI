@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using PetShop.Core.Entities.Entities;
+using PetShop.Core.Entities.Entities.Business;
+using PetShop.Core.Entities.Entities.Filter;
 
 namespace PetShop.Core.DomainService
 {

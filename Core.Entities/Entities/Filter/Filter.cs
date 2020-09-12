@@ -1,9 +1,4 @@
-﻿using PetShop.Core.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PetShop.Core.Entities.Entities
+﻿namespace PetShop.Core.Entities.Entities.Filter
 {
     public class Filter
     {
