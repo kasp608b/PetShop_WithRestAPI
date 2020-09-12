@@ -4,6 +4,7 @@ using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PetShop.Core.Entities.Entities;
 
 namespace PetShop.Infrastructure.Data
 {
@@ -11,14 +12,17 @@ namespace PetShop.Infrastructure.Data
     {
        
         private IPetRepository _petRepository;
-        public DataInitializer(IPetRepository petRepository)
+        private IOwnerRepository _ownerRepository;
+        public DataInitializer(IPetRepository petRepository, IOwnerRepository ownerRepository)
         {
             _petRepository = petRepository;
+            _ownerRepository = ownerRepository;
         }
 
         public void InitData()
         {
             List<Pet> pets;
+            List<Owner> owners;
 
             pets = new List<Pet> {
                 new Pet
@@ -57,6 +61,33 @@ namespace PetShop.Infrastructure.Data
             foreach (Pet pet in pets)
             {
                 _petRepository.AddPet(pet);
+            }
+
+            owners = new List<Owner> {
+                new Owner
+                {
+                    Name = "Harold",
+                    BirthDate = DateTime.Now.AddYears(-40),
+                    Email = "HaroldKork@gmail.uk" 
+
+                },
+                new Owner
+                {
+                    Name = "Carry",
+                    BirthDate = DateTime.Now.AddYears(-30),
+                    Email = "KarryOckthorp@gmail.uk"
+                },
+                new Owner
+                {
+                    Name = "Tom",
+                    BirthDate = DateTime.Now.AddYears(-25),
+                    Email = "TomYork@gmail.uk"
+                }
+            };
+
+            foreach (Owner owner in owners)
+            {
+                _ownerRepository.AddOwner(owner);
             }
         }
     }

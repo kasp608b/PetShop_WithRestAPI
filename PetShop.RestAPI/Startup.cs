@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PetShop.Core.ApplicationService;
 using PetShop.Core.ApplicationService.Implementations;
+using PetShop.Core.ApplicationService.Interfaces;
 using PetShop.Core.DomainService;
 using PetShop.Core.HelperClasses.Implementations;
 using PetShop.Core.HelperClasses.Interfaces;
@@ -34,6 +35,8 @@ namespace PetShop.RestAPI
         {
             services.AddScoped<IPetRepository, PetRepository>();
             services.AddScoped<IPetService, PetService>();
+            services.AddScoped<IOwnerRepository, OwnerRepository>();
+            services.AddScoped<IOwnerService, OwnerService>();
             services.AddScoped<IParser, Parser>();
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(o =>
@@ -52,9 +55,9 @@ namespace PetShop.RestAPI
                 app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var repo = scope.ServiceProvider.GetService<IPetRepository>();
-                    new DataInitializer(repo).InitData();
-                        
+                    var petRepo = scope.ServiceProvider.GetService<IPetRepository>();
+                    var ownerRepo = scope.ServiceProvider.GetService<IOwnerRepository>();
+                    new DataInitializer(petRepo, ownerRepo).InitData(); 
                 }
             //}
             
