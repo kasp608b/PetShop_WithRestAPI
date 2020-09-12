@@ -8,5 +8,10 @@ namespace PetShop.Core.Entities.Entities.Business
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
+
+        public override string ToString()
+        {
+            return $"ID = {ID.ToString()}, Name = {Name.ToString()}, BirthDate = {BirthDate.ToString()}, Email = {Email.ToString()},\n";
+        }
     }
 }
