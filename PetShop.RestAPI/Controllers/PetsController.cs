@@ -17,6 +17,9 @@ using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.RestAPI.Controllers
 {
+    /// <summary>
+    /// Controller in charge of pets.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PetsController : ControllerBase
@@ -33,7 +36,11 @@ namespace PetShop.RestAPI.Controllers
         }
 
 
-        // GET: api/<PetsController>
+        /// <summary>
+        /// Returns af filtered list of pets based on given filter. 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<FilteredList<Pet>> GetPets([FromQuery] Filter filter)
         {
@@ -55,7 +62,11 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // GET: api/<PetsController>/1
+        /// <summary>
+        /// Returns af pet based on given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<PetDTO> GetPets(int id)
         {
@@ -94,7 +105,11 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // POST api/<PetsController>
+        /// <summary>
+        /// Adds a pet to the database based on object given in Json from request body.
+        /// </summary>
+        /// <param name="pet"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
@@ -112,7 +127,12 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // PUT api/<PetsController>/5
+        /// <summary>
+        /// Edits a pet based on id and object given in Json from request body. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pet"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public ActionResult<Pet> EditPet(int id, [FromBody] Pet pet)
         {
@@ -135,7 +155,11 @@ namespace PetShop.RestAPI.Controllers
 
         }
 
-        // DELETE api/<PetsController>/5
+        /// <summary>
+        /// Deletes a pet from database based on given id. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult<Pet> Delete(int id)
         {

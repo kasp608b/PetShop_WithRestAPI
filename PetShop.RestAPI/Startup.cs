@@ -1,4 +1,7 @@
 using System;
+using System.Reflection;
+using System.IO;
+using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,14 +50,33 @@ namespace PetShop.RestAPI
                 o.SerializerSettings.MaxDepth = 5;
 
             });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "PetShop",
+                    Description = "An api used to manage a petshop",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Kacper Bujko",
+                        Email = "kacperbujko@hotmail.dk",
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
             //if (env.IsDevelopment())
             //{
-                app.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
                     var petRepo = scope.ServiceProvider.GetService<IPetRepository>();
@@ -63,7 +85,14 @@ namespace PetShop.RestAPI
                     new DataInitializer(petRepo, ownerRepo, petTypeRepo).InitData(); 
                 }
             //}
-            
+            app.UseSwaggerUI(c =>
+            {
+
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetShop V1");
+                c.RoutePrefix = string.Empty;
+
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

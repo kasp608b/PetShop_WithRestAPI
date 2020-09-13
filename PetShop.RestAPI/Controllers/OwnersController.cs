@@ -16,6 +16,9 @@ using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.RestAPI.Controllers
 {
+    /// <summary>
+    /// Controller in charge of owners
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class OwnersController : ControllerBase
@@ -29,7 +32,11 @@ namespace PetShop.RestAPI.Controllers
         }
 
 
-        // GET: api/<PetsController>
+        /// <summary>
+        /// Returns a filtered list of owners based on given filter. 
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<FilteredList<Owner>> GetOwners([FromQuery] Filter filter)
         {
@@ -51,7 +58,11 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // GET: api/<PetsController>/1
+        /// <summary>
+        /// Return an owner based on given id. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<OwnerDTO> GetOwners(int id)
         {
@@ -87,7 +98,11 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // POST api/<PetsController>
+        /// <summary>
+        /// Adds an owner to database based on object given in Json given in request body.
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<Owner> AddOwner([FromBody] Owner owner)
         {
@@ -105,7 +120,12 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // PUT api/<PetsController>/5
+        /// <summary>
+        /// Edits an owner based on given id and an object given in Json in request body.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public ActionResult<Owner> EditOwner(int id, [FromBody] Owner owner)
         {
@@ -128,7 +148,11 @@ namespace PetShop.RestAPI.Controllers
 
         }
 
-        // DELETE api/<PetsController>/5
+        /// <summary>
+        /// Deletes a pet from database based on given id. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult<Owner> Delete(int id)
         {

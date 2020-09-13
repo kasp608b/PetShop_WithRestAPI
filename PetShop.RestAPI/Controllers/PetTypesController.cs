@@ -15,6 +15,9 @@ using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.RestAPI.Controllers
 {
+    /// <summary>
+    /// The controller in charge of petTypes
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PetTypesController : ControllerBase
@@ -28,7 +31,11 @@ namespace PetShop.RestAPI.Controllers
         }
 
 
-        // GET: api/<PetsController>
+        /// <summary>
+        /// Returns a filtered list of petTypes based on given filter.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<FilteredList<PetType>> GetPetTypes([FromQuery] Filter filter)
         {
@@ -50,7 +57,11 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // GET: api/<PetsController>/1
+        /// <summary>
+        /// Returns a PetTypeDTO based on given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public ActionResult<PetTypeDTO> GetPetTypes(int id)
         {
@@ -83,7 +94,11 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // POST api/<PetsController>
+        /// <summary>
+        /// Adds a petType to the database based on object given in Json from request body.
+        /// </summary>
+        /// <param name="petType"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<PetType> AddPetType([FromBody] PetType petType)
         {
@@ -101,7 +116,12 @@ namespace PetShop.RestAPI.Controllers
             }
         }
 
-        // PUT api/<PetsController>/5
+        /// <summary>
+        /// Edits a petType based on given id and object given in Json from request body.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="petType"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public ActionResult<PetType> EditPetType(int id, [FromBody] PetType petType)
         {
@@ -124,7 +144,11 @@ namespace PetShop.RestAPI.Controllers
 
         }
 
-        // DELETE api/<PetsController>/5
+        /// <summary>
+        /// Deletes a petType from database based on given id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public ActionResult<PetType> Delete(int id)
         {
