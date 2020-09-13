@@ -1,7 +1,6 @@
 ﻿using PetShop.Core.DomainService;
 using PetShop.Core.Entities;
 using PetShop.Core.Entities.Entities;
-using PetShop.Core.Entities.Enums;
 using PetShop.Core.HelperClasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,6 +22,11 @@ namespace PetShop.Core.ApplicationService.Implementations
         {
             _petRepository = petRepository;
             _parser = parser;
+        }
+
+        public List<Pet> GetPets()
+        {
+            return _petRepository.GetAllPets();
         }
 
         public Pet AddPet(Pet pet)
@@ -96,7 +100,7 @@ namespace PetShop.Core.ApplicationService.Implementations
         }
 
 
-        public List<Pet> SearchById(int id)
+        public Pet SearchById(int id)
         {
             if (!_petRepository.GetAllPets().Exists(x => x.ID == id))
             {

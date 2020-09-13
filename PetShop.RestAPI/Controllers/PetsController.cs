@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PetShop.Core.ApplicationService;
+using PetShop.Core.ApplicationService.Interfaces;
 using PetShop.Core.Entities;
 using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Entities.Business;
+using PetShop.Core.Entities.Entities.DTO;
 using PetShop.Core.Entities.Entities.Filter;
-using PetShop.Core.Entities.Enums;
 using PetShop.Core.Entities.Exceptions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,9 +23,13 @@ namespace PetShop.RestAPI.Controllers
     {
 
         private readonly IPetService _petService;
-        public PetsController(IPetService petservice)
+        private readonly IPetTypeService _petTypeService;
+        private readonly IOwnerService _ownerService;
+        public PetsController(IPetService petService, IPetTypeService petTypeService, IOwnerService ownerService)
         {
-            _petService = petservice;
+            _petService = petService;
+            _petTypeService = petTypeService;
+            _ownerService = ownerService;
         }
 
 
@@ -52,11 +57,28 @@ namespace PetShop.RestAPI.Controllers
 
         // GET: api/<PetsController>/1
         [HttpGet("{id}")]
-        public ActionResult<List<Pet>> GetPets(int id)
+        public ActionResult<PetDTO> GetPets(int id)
         {
+            Pet pet;
+            PetDTO petDTO;
+
             try
             {
-                return Ok(_petService.SearchById(id));
+                pet = _petService.SearchById(id);
+
+                petDTO = new PetDTO
+                {
+                    ID = pet.ID,
+                    BirthDate = pet.BirthDate,
+                    Color = pet.Color,
+                    Name = pet.Name,
+                    Price = pet.Price,
+                    SoldDate = pet.SoldDate,
+                    PetType = _petTypeService.SearchById(pet.PetTypeID),
+                    PreviousOwner = _ownerService.SearchById(pet.PreviousOwnerID)
+                };
+
+                return Ok(petDTO);
             }
             catch (InvalidDataException e)
             {

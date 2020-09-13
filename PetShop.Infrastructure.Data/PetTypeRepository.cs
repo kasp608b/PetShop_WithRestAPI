@@ -75,9 +75,9 @@ namespace PetShop.Infrastructure.Data
             return petTypeToEdit;
         }
 
-        public List<PetType> SearchById(int id)
+        public PetType SearchById(int id)
         {
-            return FakeDB._petTypes.FindAll(x => x.ID == id);
+            return FakeDB._petTypes.Find(x => x.ID == id);
         }
     }
 }

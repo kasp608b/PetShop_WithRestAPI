@@ -1,6 +1,5 @@
 ﻿using PetShop.Core.DomainService;
 using PetShop.Core.Entities;
-using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,11 +35,18 @@ namespace PetShop.Infrastructure.Data
                 switch (filter.SearchField)
                 {
                     case "Name":
-                        filtering = filtering.Where(p => p.Name.Contains(filter.SearchText));
+                        filtering = filtering.Where(pet => pet.Name.Contains(filter.SearchText));
                         break;
 
-                    case "Type":
-                        filtering = filtering.Where(p => p.Type.Contains(filter.SearchText));
+                    case "PetType":
+                        if (FakeDB._petTypes.Exists(petType => petType.Name.Contains(filter.SearchText)))
+                        {
+                            filtering = filtering.Where(pet => pet.PetTypeID.Equals(FakeDB._petTypes.Find(petType => petType.Name.Equals(filter.SearchText)).ID));
+                        }
+                        else
+                        {
+                            throw new KeyNotFoundException("Could not find a pet with that petType");
+                        }
                         break;
 
                     case "BirthDate":
@@ -73,7 +79,15 @@ namespace PetShop.Infrastructure.Data
                         break;
 
                     case "PreviousOwner":
-                        filtering = filtering.Where(p => p.PreviousOwner.Contains(filter.SearchText));
+                        if (FakeDB._owners.Exists(owner => owner.Name.Contains(filter.SearchText)))
+                        {
+                            filtering = filtering.Where(pet => pet.PreviousOwnerID.Equals(FakeDB._owners.Find(owner => owner.Name.Equals(filter.SearchText)).ID));
+                        }
+                        else
+                        {
+                            throw new KeyNotFoundException("Could not find a pet with that owner");
+                        }
+
                         break;
 
                     case "Price":
@@ -100,6 +114,8 @@ namespace PetShop.Infrastructure.Data
                     throw new InvalidDataException("Wrong OrderProperty input, OrderProperty has to match to corresponding pet property");
                 }
 
+
+
                 filtering = "ASC".Equals(filter.OrderDirection)
                     ? filtering.OrderBy(p => prop.GetValue(p, null))
                     : filtering.OrderByDescending(p => prop.GetValue(p, null));
@@ -124,19 +140,19 @@ namespace PetShop.Infrastructure.Data
         {
             Pet petToEdit = FakeDB._pets.Find(x => x.ID == id);
             petToEdit.Name = editedPet.Name;
-            petToEdit.Type = editedPet.Type;
+            petToEdit.PetTypeID = editedPet.PetTypeID;
             petToEdit.BirthDate = editedPet.BirthDate;
             petToEdit.SoldDate = editedPet.SoldDate;
             petToEdit.Color = editedPet.Color;
-            petToEdit.PreviousOwner = editedPet.PreviousOwner;
+            petToEdit.PreviousOwnerID = editedPet.PreviousOwnerID;
             petToEdit.Price = editedPet.Price;
             return petToEdit;
         }
 
 
-        public List<Pet> SearchById(int id)
+        public Pet SearchById(int id)
         {
-            return FakeDB._pets.FindAll(x => x.ID == id);
+            return FakeDB._pets.Find(x => x.ID == id);
         }
     }
 }

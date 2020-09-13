@@ -17,6 +17,6 @@ namespace PetShop.Core.ApplicationService.Interfaces
 
         public Owner EditOwner(int idOfOwnerToEdit, Owner editedOwner);
 
-        public List<Owner> SearchById(int id);
+        public Owner SearchById(int id);
     }
 }

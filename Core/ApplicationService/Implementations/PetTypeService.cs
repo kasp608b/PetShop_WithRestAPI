@@ -88,7 +88,7 @@ namespace PetShop.Core.ApplicationService.Implementations
             }
         }
 
-        public List<PetType> SearchById(int id)
+        public PetType SearchById(int id)
         {
             if (!_petTypeRepository.GetAllPetTypes().Exists(x => x.ID == id))
             {

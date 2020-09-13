@@ -6,16 +6,16 @@ namespace PetShop.Core.Entities.Entities.Business
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public PetType PetType { get; set; }
+        public int PetTypeID { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime SoldDate { get; set; }
         public string Color { get; set; }
-        public string PreviousOwner { get; set; }
+        public int PreviousOwnerID { get; set; }
         public double Price { get; set; }
 
         public override string ToString()
         {
-            return $"ID = {ID.ToString()}, Name = {Name.ToString()}, Type = {PetType.ToString()}, BirthDate = {BirthDate.ToString()}, SoldDate = {SoldDate.ToString()}, Color = {Color.ToString()}, PreviousOwner = {PreviousOwner.ToString()}, Price = {Price.ToString()},\n";
+            return $"ID = {ID.ToString()}, Name = {Name.ToString()}, Type = {PetTypeID.ToString()}, BirthDate = {BirthDate.ToString()}, SoldDate = {SoldDate.ToString()}, Color = {Color.ToString()}, PreviousOwner = {PreviousOwnerID.ToString()}, Price = {Price.ToString()},\n";
         }
     }
 }

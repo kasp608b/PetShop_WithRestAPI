@@ -14,6 +14,6 @@ namespace PetShop.Core.ApplicationService.Interfaces
 
         public PetType EditPetType(int idOfPetTypeToEdit, PetType editedPetType);
 
-        public List<PetType> SearchById(int id);
+        public PetType SearchById(int id);
     }
 }

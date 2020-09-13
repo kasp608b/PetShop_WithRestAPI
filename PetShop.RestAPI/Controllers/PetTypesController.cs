@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PetShop.Core.ApplicationService;
 using PetShop.Core.ApplicationService.Interfaces;
 using PetShop.Core.Entities.Entities.Business;
+using PetShop.Core.Entities.Entities.DTO;
 using PetShop.Core.Entities.Entities.Filter;
 using PetShop.Core.Entities.Exceptions;
 
@@ -18,9 +20,11 @@ namespace PetShop.RestAPI.Controllers
     public class PetTypesController : ControllerBase
     {
         private readonly IPetTypeService _petTypeService;
-        public PetTypesController(IPetTypeService petTypeService)
+        private readonly IPetService _petService;
+        public PetTypesController(IPetTypeService petTypeService, IPetService petService)
         {
             _petTypeService = petTypeService;
+            _petService = petService;
         }
 
 
@@ -48,11 +52,22 @@ namespace PetShop.RestAPI.Controllers
 
         // GET: api/<PetsController>/1
         [HttpGet("{id}")]
-        public ActionResult<List<PetType>> GetPetTypes(int id)
+        public ActionResult<PetTypeDTO> GetPetTypes(int id)
         {
+            PetType petType;
+            PetTypeDTO petTypeDTO;
+
             try
             {
-                return Ok(_petTypeService.SearchById(id));
+                petType = _petTypeService.SearchById(id);
+                petTypeDTO = new PetTypeDTO
+                {
+                    ID = petType.ID,
+                    Name = petType.Name,
+                    Pets = _petService.GetPets().FindAll(pet => pet.PetTypeID == petType.ID)
+                };
+
+                return Ok(petTypeDTO);
             }
             catch (InvalidDataException e)
             {

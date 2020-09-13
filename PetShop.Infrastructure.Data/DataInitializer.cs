@@ -1,6 +1,5 @@
 ﻿using PetShop.Core.DomainService;
 using PetShop.Core.Entities;
-using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,10 +32,10 @@ namespace PetShop.Infrastructure.Data
                 new Pet
                 {
                     Name = "Jerry",
-                    Type = "cat",
+                    PetTypeID = 1,
                     BirthDate = DateTime.Now.AddYears(-12),
                     Color = "Blue",
-                    PreviousOwner = "Arnold Perkins",
+                    PreviousOwnerID = 1,
                     Price = 50,
                     SoldDate = DateTime.Now.AddYears(-2),
 
@@ -44,20 +43,20 @@ namespace PetShop.Infrastructure.Data
                 new Pet
                 {
                     Name = "Tom",
-                    Type = "dog",
+                    PetTypeID = 2,
                     BirthDate = DateTime.Now.AddYears(-22),
                     Color = "Red",
-                    PreviousOwner = "Cory Zemecki",
+                    PreviousOwnerID = 2,
                     Price = 10,
                     SoldDate = DateTime.Now.AddYears(-5),
                 },
                 new Pet
                 {
                     Name = "Cinc",
-                    Type = "parrot",
+                    PetTypeID = 3,
                     BirthDate = DateTime.Now.AddYears(-1),
                     Color = "Purple",
-                    PreviousOwner = "Harold Harold",
+                    PreviousOwnerID = 3,
                     Price = 100,
                     SoldDate = DateTime.Now.AddYears(-4),
                 }
@@ -74,7 +73,6 @@ namespace PetShop.Infrastructure.Data
                     Name = "Harold",
                     BirthDate = DateTime.Now.AddYears(-40),
                     Email = "HaroldKork@gmail.uk" 
-
                 },
                 new Owner
                 {

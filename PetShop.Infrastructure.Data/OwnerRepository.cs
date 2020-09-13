@@ -97,9 +97,9 @@ namespace PetShop.Infrastructure.Data
             return ownerToEdit;
         }
 
-        public List<Owner> SearchById(int id)
+        public Owner SearchById(int id)
         {
-            return FakeDB._owners.FindAll(x => x.ID == id);
+            return FakeDB._owners.Find(x => x.ID == id);
         }
     }
 }

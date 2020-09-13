@@ -1,5 +1,4 @@
 ﻿using PetShop.Core.Entities;
-using PetShop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +20,7 @@ namespace PetShop.Core.DomainService
 
         public Pet EditPet(int id, Pet editedPet);
 
-        public List<Pet> SearchById(int id);
+        public Pet SearchById(int id);
 
 
     }

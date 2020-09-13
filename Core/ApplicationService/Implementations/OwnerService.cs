@@ -92,7 +92,7 @@ namespace PetShop.Core.ApplicationService.Implementations
             }
         }
 
-        public List<Owner> SearchById(int id)
+        public Owner SearchById(int id)
         {
             if (!_ownerRepository.GetAllOwners().Exists(x => x.ID == id))
             {
