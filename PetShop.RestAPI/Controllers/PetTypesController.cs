@@ -18,6 +18,7 @@ namespace PetShop.RestAPI.Controllers
     /// <summary>
     /// The controller in charge of petTypes
     /// </summary>
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class PetTypesController : ControllerBase
@@ -34,8 +35,12 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Returns a filtered list of petTypes based on given filter.
         /// </summary>
-        /// <param name="filter"></param>
+        /// <param name="filter">The filter collects the different search and ordering queries from the request header</param>
         /// <returns></returns>
+        /// <response code="200">Returns the filtered list of petTypes</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested petTypes</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpGet]
         public ActionResult<FilteredList<PetType>> GetPetTypes([FromQuery] Filter filter)
         {
@@ -60,8 +65,12 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Returns a PetTypeDTO based on given id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id of the requested petType</param>
         /// <returns></returns>
+        /// <response code="200">Returns the requested petType in the form of a petType data transfer object which includes the pets of that type</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested petType</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpGet("{id}")]
         public ActionResult<PetTypeDTO> GetPetTypes(int id)
         {
@@ -97,8 +106,11 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Adds a petType to the database based on object given in Json from request body.
         /// </summary>
-        /// <param name="petType"></param>
+        /// <param name="petType">The petType object to be added in the form of a Json in the request body</param>
         /// <returns></returns>
+        /// <response code="200">Returns the successfully added petType</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpPost]
         public ActionResult<PetType> AddPetType([FromBody] PetType petType)
         {
@@ -119,9 +131,13 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Edits a petType based on given id and object given in Json from request body.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="petType"></param>
+        /// <param name="id">Id of petType to be edited</param>
+        /// <param name="petType">Edited petType</param>
         /// <returns></returns>
+        /// <response code="200">Returns the successfully edited petType</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested petType</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpPut("{id}")]
         public ActionResult<PetType> EditPetType(int id, [FromBody] PetType petType)
         {
@@ -147,8 +163,12 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Deletes a petType from database based on given id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id of petType to be deleted</param>
         /// <returns></returns>
+        /// <response code="200">Returns the successfully deleted petType </response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested petType</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpDelete("{id}")]
         public ActionResult<PetType> Delete(int id)
         {

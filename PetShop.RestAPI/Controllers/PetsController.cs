@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetShop.Core.ApplicationService;
 using PetShop.Core.ApplicationService.Interfaces;
@@ -20,6 +21,7 @@ namespace PetShop.RestAPI.Controllers
     /// <summary>
     /// Controller in charge of pets.
     /// </summary>
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class PetsController : ControllerBase
@@ -39,9 +41,18 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Returns af filtered list of pets based on given filter. 
         /// </summary>
-        /// <param name="filter"></param>
-        /// <returns></returns>
+        /// <param name="filter"> The filter collects the different search and ordering queries from the request header</param>
+        /// <returns>A filtered list of pets</returns>
+        /// <response code="200">Returns the filtered list of pets</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested pets</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public ActionResult<FilteredList<Pet>> GetPets([FromQuery] Filter filter)
         {
             try
@@ -63,10 +74,14 @@ namespace PetShop.RestAPI.Controllers
         }
 
         /// <summary>
-        /// Returns af pet based on given id
+        /// Returns af petDTO based on given id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id"> An id of an existing pet, must be a valid int</param>
         /// <returns></returns>
+        /// <response code="200">Returns the requested pet in the form of a pet data transfer object which includes the petType and owner objects the pet i tied to</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested pet</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpGet("{id}")]
         public ActionResult<PetDTO> GetPets(int id)
         {
@@ -77,17 +92,70 @@ namespace PetShop.RestAPI.Controllers
             {
                 pet = _petService.SearchById(id);
 
-                petDTO = new PetDTO
+                if (pet.PreviousOwnerID != 0 && pet.PetTypeID != 0)
                 {
-                    ID = pet.ID,
-                    BirthDate = pet.BirthDate,
-                    Color = pet.Color,
-                    Name = pet.Name,
-                    Price = pet.Price,
-                    SoldDate = pet.SoldDate,
-                    PetType = _petTypeService.SearchById(pet.PetTypeID),
-                    PreviousOwner = _ownerService.SearchById(pet.PreviousOwnerID)
-                };
+                    petDTO = new PetDTO
+                    {
+                        ID = pet.ID,
+                        BirthDate = pet.BirthDate,
+                        Color = pet.Color,
+                        Name = pet.Name,
+                        Price = pet.Price,
+                        SoldDate = pet.SoldDate,
+                        PetType = _petTypeService.SearchById(pet.PetTypeID),
+                        PreviousOwner = _ownerService.SearchById(pet.PreviousOwnerID)
+                    };
+
+                }
+                else if (pet.PreviousOwnerID == 0 && pet.PetTypeID != 0)
+                {
+                    petDTO = new PetDTO
+                    {
+                        ID = pet.ID,
+                        BirthDate = pet.BirthDate,
+                        Color = pet.Color,
+                        Name = pet.Name,
+                        Price = pet.Price,
+                        SoldDate = pet.SoldDate,
+                        PetType = _petTypeService.SearchById(pet.PetTypeID),
+                        PreviousOwner = null
+                    };
+
+                }
+                else if (pet.PreviousOwnerID != 0 && pet.PetTypeID == 0)
+                {
+                    petDTO = new PetDTO
+                    {
+                        ID = pet.ID,
+                        BirthDate = pet.BirthDate,
+                        Color = pet.Color,
+                        Name = pet.Name,
+                        Price = pet.Price,
+                        SoldDate = pet.SoldDate,
+                        PetType = null,
+                        PreviousOwner = _ownerService.SearchById(pet.PreviousOwnerID)
+                    };
+
+                }
+                else if (pet.PreviousOwnerID == 0 && pet.PetTypeID == 0)
+                {
+                    petDTO = new PetDTO
+                    {
+                        ID = pet.ID,
+                        BirthDate = pet.BirthDate,
+                        Color = pet.Color,
+                        Name = pet.Name,
+                        Price = pet.Price,
+                        SoldDate = pet.SoldDate,
+                        PetType = null,
+                        PreviousOwner = null
+                    };
+
+                }
+                else
+                {
+                    throw new DataBaseException("Something went very wrong");
+                }
 
                 return Ok(petDTO);
             }
@@ -108,8 +176,11 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Adds a pet to the database based on object given in Json from request body.
         /// </summary>
-        /// <param name="pet"></param>
+        /// <param name="pet">The pet to be added</param>
         /// <returns></returns>
+        /// <response code="200">Returns the added pet</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpPost]
         public ActionResult<Pet> AddPet([FromBody] Pet pet)
         {
@@ -130,9 +201,13 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Edits a pet based on id and object given in Json from request body. 
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="pet"></param>
+        /// <param name="id">Id of pet to edit</param>
+        /// <param name="pet">The edited pet</param>
         /// <returns></returns>
+        /// <response code="200">Returns the edited pet</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested pet</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpPut("{id}")]
         public ActionResult<Pet> EditPet(int id, [FromBody] Pet pet)
         {
@@ -158,8 +233,12 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Deletes a pet from database based on given id. 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id of pet to delete</param>
         /// <returns></returns>
+        /// <response code="200">Returns the successfully deleted pet</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested pets</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpDelete("{id}")]
         public ActionResult<Pet> Delete(int id)
         {

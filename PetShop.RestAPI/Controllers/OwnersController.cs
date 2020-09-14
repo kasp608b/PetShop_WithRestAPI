@@ -19,6 +19,7 @@ namespace PetShop.RestAPI.Controllers
     /// <summary>
     /// Controller in charge of owners
     /// </summary>
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class OwnersController : ControllerBase
@@ -35,8 +36,12 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Returns a filtered list of owners based on given filter. 
         /// </summary>
-        /// <param name="filter"></param>
+        /// <param name="filter">The filter collects the different search and ordering queries from the request header</param>
         /// <returns></returns>
+        /// <response code="200">Returns the filtered list of owners</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested pets</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpGet]
         public ActionResult<FilteredList<Owner>> GetOwners([FromQuery] Filter filter)
         {
@@ -59,10 +64,14 @@ namespace PetShop.RestAPI.Controllers
         }
 
         /// <summary>
-        /// Return an owner based on given id. 
+        /// Return an ownerDTO based on given id. 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id of requested owner</param>
         /// <returns></returns>
+        /// <response code="200">Returns the requested owner in the form of a pet data transfer object which includes all the pets that the owner has.</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested owner</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpGet("{id}")]
         public ActionResult<OwnerDTO> GetOwners(int id)
         {
@@ -101,8 +110,11 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Adds an owner to database based on object given in Json given in request body.
         /// </summary>
-        /// <param name="owner"></param>
+        /// <param name="owner">An owner object in Json to be added to database</param>
         /// <returns></returns>
+        /// <response code="200">Returns the added owner object</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpPost]
         public ActionResult<Owner> AddOwner([FromBody] Owner owner)
         {
@@ -123,9 +135,13 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Edits an owner based on given id and an object given in Json in request body.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="owner"></param>
+        /// <param name="id">Id of the owner to be edited</param>
+        /// <param name="owner">edited owner object in the form of Json</param>
         /// <returns></returns>
+        /// <response code="200">Returns the edited owner object</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested owner</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpPut("{id}")]
         public ActionResult<Owner> EditOwner(int id, [FromBody] Owner owner)
         {
@@ -151,8 +167,12 @@ namespace PetShop.RestAPI.Controllers
         /// <summary>
         /// Deletes a pet from database based on given id. 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id of owner to delete</param>
         /// <returns></returns>
+        /// <response code="200">Returns the deleted owner</response>
+        /// <response code="400">If the input is invalid</response>
+        /// <response code="404">If the api could not find the requested owner</response>
+        /// <response code="500">If something went from with the database</response> 
         [HttpDelete("{id}")]
         public ActionResult<Owner> Delete(int id)
         {

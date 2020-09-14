@@ -94,6 +94,7 @@ namespace PetShop.Core.ApplicationService.Implementations
 
         public Owner SearchById(int id)
         {
+            
             if (!_ownerRepository.GetAllOwners().Exists(x => x.ID == id))
             {
                 throw new KeyNotFoundException("No owners with this id exist");

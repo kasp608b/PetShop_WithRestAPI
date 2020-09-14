@@ -5,11 +5,19 @@ using System.Linq;
 using PetShop.Core.DomainService;
 using PetShop.Core.Entities.Entities.Business;
 using PetShop.Core.Entities.Entities.Filter;
+using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.Infrastructure.Data
 {
     public class PetTypeRepository : IPetTypeRepository
     {
+        private readonly IPetRepository _petRepository;
+
+        public PetTypeRepository(IPetRepository petRepository)
+        {
+            _petRepository = petRepository;
+        }
+
         public List<PetType> GetAllPetTypes()
         {
             return FakeDB._petTypes;
@@ -64,7 +72,17 @@ namespace PetShop.Infrastructure.Data
 
         public PetType DeletePetType(PetType petTypeToDelete)
         {
-            GetAllPetTypes().Remove(petTypeToDelete);
+            if (GetAllPetTypes().Remove(petTypeToDelete))
+            {
+                foreach (Pet pet in _petRepository.GetAllPets().FindAll(pet => pet.PetTypeID == petTypeToDelete.ID))
+                {
+                    FakeDB._pets.Remove(pet);
+                }
+            }
+            else
+            {
+                throw new DataBaseException("Database failed to delete petType");
+            }
             return petTypeToDelete;
         }
 

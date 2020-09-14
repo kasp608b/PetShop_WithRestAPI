@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,19 @@ using PetShop.Core.Entities;
 using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Entities.Business;
 using PetShop.Core.Entities.Entities.Filter;
+using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.Infrastructure.Data
 {
     public class OwnerRepository : IOwnerRepository
     {
+        private readonly IPetRepository _petRepository;
+
+        public OwnerRepository(IPetRepository petRepository)
+        {
+            _petRepository = petRepository;
+        }
+
         public List<Owner> GetAllOwners()
         {
             return FakeDB._owners;
@@ -84,7 +93,18 @@ namespace PetShop.Infrastructure.Data
 
         public Owner DeleteOwner(Owner ownerToDelete)
         {
-            GetAllOwners().Remove(ownerToDelete);
+            if(GetAllOwners().Remove(ownerToDelete))
+            {
+                foreach (Pet pet in _petRepository.GetAllPets().FindAll(pet => pet.PreviousOwnerID == ownerToDelete.ID ))
+                {
+                    pet.PreviousOwnerID = 0;
+                }
+
+            }
+            else
+            {
+                throw new DataBaseException("Database failed to delete owner");
+            }
             return ownerToDelete;
         }
 

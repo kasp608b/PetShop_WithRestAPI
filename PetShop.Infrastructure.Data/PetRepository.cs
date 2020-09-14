@@ -8,6 +8,7 @@ using System.Text;
 using PetShop.Core.Entities.Entities;
 using PetShop.Core.Entities.Entities.Business;
 using PetShop.Core.Entities.Entities.Filter;
+using PetShop.Core.Entities.Exceptions;
 
 namespace PetShop.Infrastructure.Data
 {
@@ -132,7 +133,14 @@ namespace PetShop.Infrastructure.Data
 
         public Pet DeletePet(Pet petToDelete)
         {
-            GetAllPets().Remove(petToDelete);
+            if (GetAllPets().Remove(petToDelete))
+            {
+
+            }
+            else
+            {
+                throw new DataBaseException("Database failed to delete pet");
+            }
             return petToDelete;
         }
 
