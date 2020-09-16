@@ -92,65 +92,13 @@ namespace PetShop.RestAPI.Controllers
             {
                 pet = _petService.SearchById(id);
 
-                if (pet.PreviousOwnerID != 0 && pet.PetTypeID != 0)
+                if (pet.PreviousOwnerID != 0)
                 {
-                    petDTO = new PetDTO
-                    {
-                        ID = pet.ID,
-                        BirthDate = pet.BirthDate,
-                        Color = pet.Color,
-                        Name = pet.Name,
-                        Price = pet.Price,
-                        SoldDate = pet.SoldDate,
-                        PetType = _petTypeService.SearchById(pet.PetTypeID),
-                        PreviousOwner = _ownerService.SearchById(pet.PreviousOwnerID)
-                    };
-
+                    petDTO = new PetDTO(pet.ID, pet.Name, _petTypeService.SearchById(pet.PetTypeID), pet.BirthDate, pet.SoldDate, pet.Color, _ownerService.SearchById(pet.PreviousOwnerID), pet.Price);
                 }
-                else if (pet.PreviousOwnerID == 0 && pet.PetTypeID != 0)
+                else if (pet.PreviousOwnerID == 0)
                 {
-                    petDTO = new PetDTO
-                    {
-                        ID = pet.ID,
-                        BirthDate = pet.BirthDate,
-                        Color = pet.Color,
-                        Name = pet.Name,
-                        Price = pet.Price,
-                        SoldDate = pet.SoldDate,
-                        PetType = _petTypeService.SearchById(pet.PetTypeID),
-                        PreviousOwner = null
-                    };
-
-                }
-                else if (pet.PreviousOwnerID != 0 && pet.PetTypeID == 0)
-                {
-                    petDTO = new PetDTO
-                    {
-                        ID = pet.ID,
-                        BirthDate = pet.BirthDate,
-                        Color = pet.Color,
-                        Name = pet.Name,
-                        Price = pet.Price,
-                        SoldDate = pet.SoldDate,
-                        PetType = null,
-                        PreviousOwner = _ownerService.SearchById(pet.PreviousOwnerID)
-                    };
-
-                }
-                else if (pet.PreviousOwnerID == 0 && pet.PetTypeID == 0)
-                {
-                    petDTO = new PetDTO
-                    {
-                        ID = pet.ID,
-                        BirthDate = pet.BirthDate,
-                        Color = pet.Color,
-                        Name = pet.Name,
-                        Price = pet.Price,
-                        SoldDate = pet.SoldDate,
-                        PetType = null,
-                        PreviousOwner = null
-                    };
-
+                    petDTO = new PetDTO(pet.ID, pet.Name, _petTypeService.SearchById(pet.PetTypeID), pet.BirthDate, pet.SoldDate, pet.Color, null, pet.Price);
                 }
                 else
                 {

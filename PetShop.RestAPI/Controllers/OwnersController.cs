@@ -77,19 +77,24 @@ namespace PetShop.RestAPI.Controllers
         {
             Owner owner;
             OwnerDTO ownerDTO;
+            List<Pet> pets;
 
             try
             {
+
                owner = _ownerService.SearchById(id);
 
-               ownerDTO = new OwnerDTO
+               if (_petService.GetPets().Exists(pet => pet.PreviousOwnerID == owner.ID))
                {
-                   ID = owner.ID,
-                   BirthDate = owner.BirthDate,
-                   Email = owner.Email,
-                   Name = owner.Name,
-                   Pets = _petService.GetPets().FindAll(pet => pet.PreviousOwnerID == owner.ID)
-               };
+                   pets = _petService.GetPets().FindAll(pet => pet.PreviousOwnerID == owner.ID);
+               }
+               else
+               {
+                   pets = null;
+               }
+
+               ownerDTO = new OwnerDTO(owner.ID, owner.Name, owner.Email, owner.BirthDate, pets);
+              
 
                return Ok(ownerDTO);
             }

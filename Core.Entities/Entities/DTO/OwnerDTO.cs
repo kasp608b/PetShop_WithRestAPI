@@ -6,11 +6,20 @@ namespace PetShop.Core.Entities.Entities.DTO
 {
     public class OwnerDTO
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public DateTime BirthDate { get; set; }
-        public List<Pet> Pets { get; set; }
+        public OwnerDTO(int id, string name, string email, DateTime birthDate, List<Pet> pets)
+        {
+            ID = id;
+            Name = name;
+            Email = email;
+            BirthDate = birthDate;
+            Pets = pets;
+        }
+
+        public int ID { get; }
+        public string Name { get; }
+        public string Email { get; }
+        public DateTime BirthDate { get; }
+        public List<Pet> Pets { get; }
 
         public override string ToString()
         {

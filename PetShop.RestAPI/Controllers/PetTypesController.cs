@@ -76,17 +76,22 @@ namespace PetShop.RestAPI.Controllers
         {
             PetType petType;
             PetTypeDTO petTypeDTO;
+            List<Pet> pets;
 
             try
             {
                 petType = _petTypeService.SearchById(id);
-                petTypeDTO = new PetTypeDTO
+                if (_petService.GetPets().Exists(pet => pet.PetTypeID == petType.ID))
                 {
-                    ID = petType.ID,
-                    Name = petType.Name,
-                    Pets = _petService.GetPets().FindAll(pet => pet.PetTypeID == petType.ID)
-                };
+                    pets = _petService.GetPets().FindAll(pet => pet.PetTypeID == petType.ID);
+                }
+                else
+                {
+                    pets = null;
+                }
 
+                petTypeDTO = new PetTypeDTO(petType.ID, petType.Name, pets);
+                
                 return Ok(petTypeDTO);
             }
             catch (InvalidDataException e)

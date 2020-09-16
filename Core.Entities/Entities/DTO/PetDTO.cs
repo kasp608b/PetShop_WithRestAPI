@@ -5,14 +5,26 @@ namespace PetShop.Core.Entities.Entities.DTO
 {
     public class PetDTO
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public PetType PetType { get; set; }
-        public DateTime BirthDate { get; set; }
-        public DateTime SoldDate { get; set; }
-        public string Color { get; set; }
-        public Owner PreviousOwner { get; set; }
-        public double Price { get; set; }
+        public PetDTO(int id, string name, PetType petType, DateTime birthDate, DateTime soldDate, string color, Owner previousOwner, double price)
+        {
+            ID = id;
+            Name = name;
+            PetType = petType;
+            BirthDate = birthDate;
+            SoldDate = soldDate;
+            Color = color;
+            PreviousOwner = previousOwner;
+            Price = price;
+        }
+
+        public int ID { get; }
+        public string Name { get; }
+        public PetType PetType { get; }
+        public DateTime BirthDate { get; }
+        public DateTime SoldDate { get; }
+        public string Color { get; }
+        public Owner PreviousOwner { get; }
+        public double Price { get; }
 
         public override string ToString()
         {
